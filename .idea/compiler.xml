@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="batch-csv-to-mysql" />
+        <module name="batch-cutom-reader" />
+        <module name="batch-init-b" />
+        <module name="batch-inti-a" />
+        <module name="batch-scheduler" />
+        <module name="batch-xml-to-cvs" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8">
+      <module name="batch-csv-to-mysql" target="1.8" />
+      <module name="batch-cutom-reader" target="1.7" />
+      <module name="batch-init-b" target="1.8" />
+      <module name="batch-inti-a" target="1.8" />
+      <module name="batch-scheduler" target="1.7" />
+      <module name="batch-xml-to-cvs" target="1.8" />
+      <module name="spring-batch" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

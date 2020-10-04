@@ -1,0 +1,5 @@
+org/training/spring/App.class
+org/training/spring/model/Output.class
+org/training/spring/model/Report.class
+org/training/spring/mapper/ReportFieldSetMapper.class
+org/training/spring/processing/CustomItemProcessor.class

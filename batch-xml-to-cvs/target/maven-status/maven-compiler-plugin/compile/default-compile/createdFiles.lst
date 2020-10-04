@@ -1,0 +1,7 @@
+org/training/spring/model/JaxbDateAdapter.class
+org/training/spring/header/MyCustomHeader.class
+org/training/spring/App.class
+org/training/spring/model/Report.class
+org/training/spring/FilterReportProcessor.class
+org/training/spring/header/MyCustomFooter.class
+org/training/spring/model/JaxbBigDecimalAdapter.class
