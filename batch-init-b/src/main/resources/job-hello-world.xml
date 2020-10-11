@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch
+  http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+  http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+  http://www.springframework.org/schema/context
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <context:component-scan base-package="org.training.spring" />
+    <!-- Importer les definitions des jobs  -->
+    <import resource="config/context.xml" />
+    <import resource="config/database.xml" />
+    <!-- Le job utilise le chunk reader & writer -->
+    <!-- ######## abstract step ########### -->
+    <batch:step id="abstractStep" abstract="true">
+        <batch:tasklet allow-start-if-complete="true" start-limit="7">
+            <batch:chunk commit-interval="2" />
+        </batch:tasklet>
+    </batch:step>
+    <!-- JOB principal -->
+    <batch:job id="jdbc2FileJob" restartable="true">
+        <batch:step id="stepJdbc2File" parent="abstractStep">
+            <batch:tasklet>
+                <batch:chunk reader="jdbcReader"
+                             processor="myProcessor"
+                             writer="fileWriter"/>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+    <!--    itemProcessor       -->
+    <bean id="myProcessor" class="org.training.spring.step.MyProcessor"/>
+    <!-- JDBC reader le bean nommé jdbcReader.    -->
+    <bean id="jdbcReader" class="org.springframework.batch.item.database.JdbcPagingItemReader">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="queryProvider">
+            <bean class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+                <property name="dataSource" ref="dataSource" />
+                <property name="selectClause"
+                          value="select id,nom,prenom,adresse"/>
+                <property name="fromClause" value="from Client"/>
+                <property name="sortKey" value="nom"/>
+            </bean>
+        </property>
+        <property name="pageSize" value="10"/>
+        <property name="rowMapper">
+            <bean class="org.training.spring.mapper.MyRowMapper" />
+        </property>
+    </bean>
+    <!--                   fileWriter                          -->
+    <bean id="fileWriter"
+          class="org.springframework.batch.item.file.FlatFileItemWriter">
+        <property name="lineAggregator" ref="lineAggregator" />
+        <property name="resource" value="file:output.txt" />
+    </bean>
+    <bean id="lineAggregator"
+          class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+        <property name="delimiter" value="!" />
+    </bean>
+</beans>
